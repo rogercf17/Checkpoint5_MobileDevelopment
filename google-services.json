@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "140238700200",
+    "firebase_url": "https://checkpoint2-mobile-b26af-default-rtdb.firebaseio.com",
+    "project_id": "checkpoint2-mobile-b26af",
+    "storage_bucket": "checkpoint2-mobile-b26af.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140238700200:android:e812f7dc5ccbadf9970c9d",
+        "android_client_info": {
+          "package_name": "com.roger.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdqxS34SZxDbQ6b_7qrsHMZ_6zHq82TQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
