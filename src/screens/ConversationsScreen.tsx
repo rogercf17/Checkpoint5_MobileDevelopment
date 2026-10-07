@@ -8,7 +8,7 @@ import { Avatar } from '../components/Avatar';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { Loading } from '../components/Loading';
 
- type Props = NativeStackScreenProps<RootStackParamList, 'Conversations'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Conversations'>;
 
 export default function ConversationsScreen({ navigation }: Props) {
   const { user, logout } = useAuth();
@@ -36,6 +36,7 @@ export default function ConversationsScreen({ navigation }: Props) {
         <Text style={styles.title}>Conversas</Text>
         <View style={styles.actions}>
           <Pressable onPress={() => navigation.navigate('Users')}><Text style={styles.link}>Usuários</Text></Pressable>
+          <Pressable onPress={() => navigation.navigate('GroupForm')}><Text style={styles.link}>Novo grupo</Text></Pressable>
           <Pressable onPress={() => void logout()}><Text style={styles.logout}>Sair</Text></Pressable>
         </View>
       </View>
@@ -44,7 +45,7 @@ export default function ConversationsScreen({ navigation }: Props) {
         <FlatList
           data={items}
           keyExtractor={(item) => item.id}
-          ListEmptyComponent={<Text style={styles.empty}>Nenhuma conversa ainda. Toque em Usuários para iniciar uma.</Text>}
+          ListEmptyComponent={<Text style={styles.empty}>Nenhuma conversa ainda. Toque em Usuários para iniciar uma ou crie um grupo.</Text>}
           renderItem={({ item }) => {
             const isGroup = item.conversationType === 'group';
             const title = isGroup ? item.name : item.otherUser?.name ?? 'Usuário';
@@ -67,7 +68,7 @@ export default function ConversationsScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
+  header: { marginBottom: 12, gap: 8 },
   title: { fontSize: 26, fontWeight: '800' },
   actions: { flexDirection: 'row', gap: 14 },
   link: { color: '#1E6BFF', fontWeight: '700' },

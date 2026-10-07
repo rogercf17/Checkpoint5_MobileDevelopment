@@ -9,8 +9,12 @@ export function ChatInput({ disabled = false, onSend }: Props) {
   const submit = useCallback(async () => {
     const value = text.trim();
     if (!value || disabled) return;
-    await onSend(value);
-    setText('');
+    try {
+      await onSend(value);
+      setText('');
+    } catch {
+      // erro exibido pela tela; o texto fica no campo para tentar de novo
+    }
   }, [disabled, onSend, text]);
 
   return (
@@ -23,7 +27,11 @@ export function ChatInput({ disabled = false, onSend }: Props) {
         multiline
         editable={!disabled}
       />
-      <Pressable style={[styles.button, (!text.trim() || disabled) && styles.disabled]} onPress={() => void submit()} disabled={!text.trim() || disabled}>
+      <Pressable
+        style={[styles.button, (!text.trim() || disabled) && styles.disabled]}
+        onPress={() => void submit()}
+        disabled={!text.trim() || disabled}
+      >
         <Text style={styles.buttonText}>{disabled ? '...' : 'Enviar'}</Text>
       </Pressable>
     </View>
