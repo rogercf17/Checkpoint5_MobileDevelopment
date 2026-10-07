@@ -45,4 +45,4 @@ yarn-error.*
 *serviceAccount*.json
 *firebase-adminsdk*.json
 server/dist
-server/node_modules
+server/node_modules*.zip
