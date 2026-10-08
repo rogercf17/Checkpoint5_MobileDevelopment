@@ -14,6 +14,7 @@ import { POLICY_OPTIONS } from '../utils/policies';
 import { Avatar } from '../components/Avatar';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { Loading } from '../components/Loading';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'GroupForm'>;
 
@@ -34,6 +35,8 @@ export default function GroupFormScreen({ route, navigation }: Props) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const initialized = useRef(false);
+
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     navigation.setOptions({ title: editing ? 'Editar grupo' : 'Novo grupo' });
@@ -160,7 +163,9 @@ export default function GroupFormScreen({ route, navigation }: Props) {
   const footer = (
     <View style={styles.form}>
       <ErrorMessage message={error} />
-      <Button title={saving ? 'Salvando...' : editing ? 'Salvar alterações' : 'Criar grupo'} onPress={() => void handleSave()} disabled={saving} />
+      <View style={{ paddingBottom: Math.max(insets.bottom, 10) }}>
+        <Button title={saving ? 'Salvando...' : editing ? 'Salvar alterações' : 'Criar grupo'} onPress={() => void handleSave()} disabled={saving} />
+      </View>
     </View>
   );
 

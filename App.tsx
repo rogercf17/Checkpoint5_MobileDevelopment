@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import type { RootStackParamList } from './src/types/navigation';
 import LoginScreen from './src/screens/LoginScreen';
@@ -58,12 +59,14 @@ export default function App() {
   const [navReady, setNavReady] = useState(false);
 
   return (
-    <AuthProvider>
-      <NavigationContainer ref={navigationRef} onReady={() => setNavReady(true)}>
-        <AppNavigator navReady={navReady} />
-        <StatusBar style="auto" />
-      </NavigationContainer>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <NavigationContainer ref={navigationRef} onReady={() => setNavReady(true)}>
+          <AppNavigator navReady={navReady} />
+          <StatusBar style="auto" />
+        </NavigationContainer>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
 

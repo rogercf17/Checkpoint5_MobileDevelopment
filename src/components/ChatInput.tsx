@@ -1,10 +1,13 @@
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = { disabled?: boolean; onSend: (text: string) => Promise<void> };
 
 export function ChatInput({ disabled = false, onSend }: Props) {
   const [text, setText] = useState('');
+  
+  const insets = useSafeAreaInsets();
 
   const submit = useCallback(async () => {
     const value = text.trim();
@@ -13,12 +16,12 @@ export function ChatInput({ disabled = false, onSend }: Props) {
       await onSend(value);
       setText('');
     } catch {
-      // erro exibido pela tela; o texto fica no campo para tentar de novo
+      
     }
   }, [disabled, onSend, text]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: Math.max(insets.bottom, 10) }]}>
       <TextInput
         style={styles.input}
         placeholder="Digite uma mensagem..."

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../types/navigation';
 import type { MessageTarget } from '../types/chat';
@@ -31,7 +31,6 @@ export default function ChatScreen({ route, navigation }: Props) {
   const [otherUser, setOtherUser] = useState<PublicUser | null>(null);
   const [mentioned, setMentioned] = useState<string[]>([]);
 
-  // conversa direta: carrega o outro usuário
   useEffect(() => {
     if (isGroup || !user) return undefined;
     const otherId = conversationId.replace('direct_', '').split('_').find((id) => id !== user.uid);
@@ -41,7 +40,7 @@ export default function ChatScreen({ route, navigation }: Props) {
     return () => { active = false; };
   }, [conversationId, isGroup, user]);
 
-  // cabeçalho: nome + foto; toque abre integrantes (grupo) ou perfil (direta)
+  
   useEffect(() => {
     const title = isGroup ? group?.name ?? 'Grupo' : otherUser?.name ?? 'Conversa';
     const photo = isGroup ? group?.photoUrl : otherUser?.photoUrl;
@@ -64,7 +63,6 @@ export default function ChatScreen({ route, navigation }: Props) {
   }, []);
 
   const handleSend = useCallback(async (text: string) => {
-    // 1 marcado = mensagem direcionada a um integrante; senão, geral
     const target: MessageTarget =
       mentioned.length === 1 ? { type: 'member', memberId: mentioned[0] } : { type: 'conversation' };
     await send(text, target, mentioned);
@@ -75,7 +73,10 @@ export default function ChatScreen({ route, navigation }: Props) {
   const others = useMemo(() => memberIds.filter((id) => id !== user?.uid), [memberIds, user?.uid]);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       {loading ? <Loading /> : (
         <FlatList
           style={styles.list}
@@ -112,7 +113,7 @@ export default function ChatScreen({ route, navigation }: Props) {
         </View>
       ) : null}
       <ChatInput disabled={sending || !user} onSend={handleSend} />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
